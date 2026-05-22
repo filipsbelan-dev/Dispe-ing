@@ -2,408 +2,484 @@
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Zákazky</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0c0d10;
-  --s1: #13151a;
-  --s2: #1a1d24;
-  --s3: #22262f;
-  --border: #2c303b;
-  --accent: #f0c040;
-  --accent2: #e07b30;
-  --zello: #1b9e3e;
-  --zello2: #17852f;
-  --text: #e6e8ee;
-  --muted: #5c6375;
-  --red: #e05555;
-  --green: #3dba52;
-  --rec: #e03c3c;
+  --bg:      #080a0e;
+  --s1:      #0f1217;
+  --s2:      #161b22;
+  --s3:      #1e2530;
+  --border:  #252d3a;
+  --border2: #2e3a4a;
+  --gold:    #f5c842;
+  --gold2:   #e8a020;
+  --orange:  #f07030;
+  --zello:   #18a03a;
+  --text:    #dde2ea;
+  --muted:   #50607a;
+  --dim:     #3a4a5c;
+  --red:     #e04444;
+  --green:   #34c054;
+  --rec:     #e03030;
+  --blue:    #4a9eff;
+  --r: 10px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-tap-highlight-color:transparent;}
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Barlow', sans-serif;
   min-height: 100svh;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
+  /* subtle grid texture */
+  background-image:
+    linear-gradient(rgba(245,200,66,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,200,66,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-/* ── HEADER ── */
+/* ─── HEADER ─── */
 header {
-  position: sticky; top: 0; z-index: 50;
-  background: var(--s1);
-  border-bottom: 2px solid var(--accent);
-  padding: 16px 20px 12px;
-  display: flex; align-items: flex-end; gap: 14px;
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(8,10,14,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0 18px;
+  height: 58px;
+  display: flex; align-items: center; gap: 12px;
 }
-header h1 {
+.logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.2rem; letter-spacing: 4px;
-  color: var(--accent); line-height: 1;
-}
-.hbadge {
-  background: var(--accent); color: #000;
-  font-weight: 700; font-size: 0.72rem;
-  padding: 2px 9px; border-radius: 20px;
-  margin-bottom: 3px; white-space: nowrap;
-}
-
-/* Zello floating button */
-.zello-fab {
-  margin-left: auto;
-  display: flex; align-items: center; gap: 8px;
-  background: var(--zello);
-  border: none; border-radius: 50px;
-  padding: 8px 14px 8px 10px;
-  cursor: pointer;
-  color: #fff; font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem; font-weight: 600;
-  text-decoration: none;
-  transition: background 0.15s, transform 0.1s;
-  box-shadow: 0 0 0 0 rgba(27,158,62,0.5);
-  animation: zelloPulse 2.5s ease infinite;
-}
-.zello-fab:hover { background: var(--zello2); transform: scale(1.04); }
-@keyframes zelloPulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(27,158,62,0.45); }
-  50%      { box-shadow: 0 0 0 7px rgba(27,158,62,0); }
-}
-.zello-dot {
-  width: 10px; height: 10px;
-  background: #fff; border-radius: 50%;
+  font-size: 1.9rem; letter-spacing: 5px;
+  color: var(--gold); line-height: 1;
   flex-shrink: 0;
 }
+.logo span { color: var(--orange); }
+.hbadge {
+  background: var(--gold); color: #000;
+  font-weight: 700; font-size: 0.68rem;
+  padding: 2px 8px; border-radius: 20px;
+  letter-spacing: 0.5px; flex-shrink: 0;
+}
+.hbadge.zero { background: var(--s3); color: var(--muted); }
 
-/* ── CONTAINER ── */
-.wrap { max-width: 680px; margin: 0 auto; padding: 24px 16px; }
+.spacer { flex: 1; }
 
-/* ── ADD CARD ── */
-.add-card {
+/* Zello pill */
+.zello-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--zello); border: none; border-radius: 50px;
+  padding: 7px 13px 7px 9px;
+  color: #fff; font-family: 'Barlow', sans-serif;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+  cursor: pointer; text-decoration: none;
+  transition: opacity 0.15s, transform 0.1s;
+  animation: zpulse 2.8s ease infinite;
+  flex-shrink: 0;
+}
+.zello-btn:hover { opacity: 0.88; transform: scale(1.03); }
+@keyframes zpulse {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(24,160,58,.5); }
+  60%    { box-shadow: 0 0 0 8px rgba(24,160,58,0); }
+}
+.zdot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fff; flex-shrink: 0;
+  box-shadow: 0 0 4px #fff;
+}
+
+/* ─── WRAP ─── */
+.wrap { max-width: 660px; margin: 0 auto; padding: 22px 14px; }
+
+/* ─── ADD PANEL ─── */
+.add-panel {
   background: var(--s1);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
-  margin-bottom: 24px;
-}
-.add-card-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem; letter-spacing: 2px;
-  color: var(--muted); margin-bottom: 12px;
+  border-radius: var(--r);
+  margin-bottom: 22px;
+  overflow: hidden;
 }
 
-.field { margin-bottom: 10px; }
+.panel-head {
+  background: var(--s2);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.panel-head-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem; letter-spacing: 3px; color: var(--muted);
+}
+.panel-head-label span { color: var(--gold); }
+
+.panel-body { padding: 16px; }
+
+/* ─── MIC BUTTON ─── */
+.mic-center {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.mic-big {
+  position: relative;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: var(--s2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.mic-big:hover { border-color: var(--gold); background: var(--s3); }
+.mic-big.rec {
+  border-color: var(--rec);
+  background: rgba(224,48,48,0.12);
+  animation: recring 1.1s ease infinite;
+}
+@keyframes recring {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(224,48,48,.5); }
+  55%    { box-shadow: 0 0 0 14px rgba(224,48,48,0); }
+}
+.mic-big svg { transition: color 0.15s; }
+.mic-big.rec svg { color: var(--rec) !important; }
+
+/* waveform bars */
+.wavebars {
+  display: flex; align-items: center; gap: 3px;
+  height: 22px; opacity: 0;
+  transition: opacity 0.3s;
+}
+.wavebars.active { opacity: 1; }
+.wavebars span {
+  display: block; width: 3px; background: var(--rec);
+  border-radius: 2px; height: 6px;
+  animation: wavebar 0.7s ease infinite;
+}
+.wavebars span:nth-child(1){ animation-delay:0s;    }
+.wavebars span:nth-child(2){ animation-delay:0.1s;  }
+.wavebars span:nth-child(3){ animation-delay:0.2s;  }
+.wavebars span:nth-child(4){ animation-delay:0.1s;  }
+.wavebars span:nth-child(5){ animation-delay:0.25s; }
+.wavebars span:nth-child(6){ animation-delay:0.05s; }
+.wavebars span:nth-child(7){ animation-delay:0.15s; }
+@keyframes wavebar {
+  0%,100%{ height:4px;  }
+  50%    { height:20px; }
+}
+
+.mic-status {
+  font-size: 0.82rem; color: var(--muted);
+  letter-spacing: 0.3px; text-align: center;
+}
+.mic-status.rec { color: var(--rec); font-weight: 600; }
+.rec-t {
+  font-size: 0.9rem; font-weight: 700;
+  color: var(--rec); font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+
+/* ─── INLINE RECORDED PREVIEW ─── */
+/* This is shown inside the add form before saving */
+.rec-preview {
+  display: none;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  align-items: center; gap: 10px;
+}
+.rec-preview.show { display: flex; }
+.rec-preview-label { font-size: 0.8rem; color: var(--gold); font-weight: 600; flex-shrink: 0; }
+
+/* Inline mini player shared styles */
+.mini-player {
+  display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+}
+.play-btn {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  background: var(--s3);
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s;
+}
+.play-btn:hover { background: var(--border2); border-color: var(--gold); }
+.play-btn.playing { background: var(--gold); color: #000; border-color: var(--gold); }
+
+.prog-track {
+  flex: 1; height: 4px;
+  background: var(--border);
+  border-radius: 2px; cursor: pointer; min-width: 0;
+  position: relative;
+}
+.prog-fill {
+  height: 100%; background: var(--gold);
+  border-radius: 2px; width: 0%;
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+.time-label { font-size: 0.7rem; color: var(--muted); flex-shrink: 0; font-variant-numeric: tabular-nums; width: 34px; text-align: right; }
+
+.rm-btn {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  padding: 3px; border-radius: 5px;
+  display: flex; align-items: center; flex-shrink: 0;
+  transition: color 0.15s;
+}
+.rm-btn:hover { color: var(--red); }
+
+/* fields */
+.fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 input[type=text], textarea {
   width: 100%;
   background: var(--bg);
   border: 1px solid var(--border);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.93rem;
   padding: 10px 13px;
-  border-radius: 9px;
+  border-radius: 8px;
   outline: none;
   transition: border-color 0.2s;
   -webkit-appearance: none;
 }
-input[type=text]:focus, textarea:focus { border-color: var(--accent); }
-textarea { resize: vertical; min-height: 64px; }
+input[type=text]:focus, textarea:focus { border-color: var(--gold); }
+textarea { resize: vertical; min-height: 60px; }
 
-/* ── MIC ROW ── */
-.mic-row {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 12px;
+/* file upload */
+.upload-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+input[type=file]{ display: none; }
+.upload-lbl {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--s2); border: 1px dashed var(--border2);
+  color: var(--muted); font-family: 'Barlow', sans-serif;
+  font-size: 0.8rem; padding: 6px 12px;
+  border-radius: 7px; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
 }
-.mic-btn {
-  flex-shrink: 0;
-  width: 46px; height: 46px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  background: var(--s2);
-  color: var(--muted);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.15s;
-}
-.mic-btn:hover { border-color: var(--accent); color: var(--accent); }
-.mic-btn.recording {
-  background: var(--rec);
-  border-color: var(--rec);
-  color: #fff;
-  animation: recPulse 1s ease infinite;
-}
-@keyframes recPulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(224,60,60,0.5); }
-  50%      { box-shadow: 0 0 0 10px rgba(224,60,60,0); }
-}
-.mic-status {
-  font-size: 0.82rem; color: var(--muted);
-  flex: 1; min-width: 0;
-}
-.mic-status.active { color: var(--rec); font-weight: 600; }
-.rec-timer { font-variant-numeric: tabular-nums; }
+.upload-lbl:hover { border-color: var(--gold); color: var(--gold); }
+.upload-name { font-size: 0.78rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.audio-preview-wrap {
-  display: none;
-  align-items: center; gap: 8px;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 8px 10px;
-  margin-bottom: 12px;
-}
-.audio-preview-wrap.show { display: flex; }
-.audio-preview-wrap audio {
-  flex: 1; height: 32px;
-  accent-color: var(--accent);
-}
-.btn-icon-sm {
-  background: none; border: none;
-  color: var(--muted); cursor: pointer;
-  padding: 4px; border-radius: 6px;
-  display: flex; align-items: center;
-  transition: color 0.15s;
-}
-.btn-icon-sm:hover { color: var(--red); }
-
-/* ── FILE UPLOAD fallback ── */
-.file-row {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 12px;
-}
-input[type=file] { display: none; }
-.file-lbl {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--s2); border: 1px dashed var(--border);
-  color: var(--muted); font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem; padding: 6px 13px;
-  border-radius: 8px; cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-}
-.file-lbl:hover { border-color: var(--accent); color: var(--accent); }
-.file-name { font-size: 0.8rem; color: var(--muted); flex:1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* ── ADD BTN ── */
+/* add button */
 .add-btn {
   width: 100%;
-  background: var(--accent); color: #000;
-  border: none; border-radius: 9px;
-  padding: 11px; font-family: 'DM Sans', sans-serif;
-  font-weight: 700; font-size: 0.95rem;
+  background: var(--gold); color: #000;
+  border: none; border-radius: 8px;
+  padding: 12px; font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem; letter-spacing: 3px;
   cursor: pointer; transition: background 0.15s, transform 0.1s;
 }
-.add-btn:hover { background: #f5d360; }
+.add-btn:hover { background: #f8d555; }
 .add-btn:active { transform: scale(0.98); }
 
-/* ── PROGRESS ── */
-.stats-row {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 6px;
-  font-size: 0.8rem; color: var(--muted);
+/* ─── STATS ─── */
+.stats-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px; font-size: 0.78rem; color: var(--muted);
 }
-.stats-row strong { color: var(--text); }
-.prog-wrap {
-  background: var(--s2); border-radius: 4px;
-  height: 4px; margin-bottom: 18px; overflow: hidden;
+.stats-bar b { color: var(--text); font-weight: 600; }
+.pb-wrap {
+  background: var(--s2); border-radius: 3px;
+  height: 3px; margin-bottom: 18px; overflow: hidden;
 }
-.prog-inner {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  height: 100%; border-radius: 4px;
-  transition: width 0.4s ease;
+.pb-inner {
+  background: linear-gradient(90deg, var(--gold), var(--orange));
+  height: 100%; border-radius: 3px;
+  transition: width 0.45s cubic-bezier(.4,0,.2,1);
 }
 
-/* ── TABS ── */
-.tabs { display: flex; gap: 6px; margin-bottom: 18px; }
+/* ─── TABS ─── */
+.tabs { display: flex; gap: 5px; margin-bottom: 16px; }
 .tab {
   background: none; border: 1px solid var(--border);
-  color: var(--muted); font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem; font-weight: 500;
+  color: var(--muted); font-family: 'Barlow', sans-serif;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.3px;
   padding: 6px 15px; border-radius: 20px;
   cursor: pointer; transition: all 0.15s;
 }
-.tab.active {
-  background: var(--accent); border-color: var(--accent);
-  color: #000; font-weight: 700;
-}
+.tab.active { background: var(--gold); border-color: var(--gold); color: #000; }
 
-/* ── TASK CARDS ── */
+/* ─── TASK CARDS ─── */
 .task-card {
   background: var(--s1);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 13px 14px;
-  margin-bottom: 8px;
-  display: flex; gap: 12px; align-items: flex-start;
-  transition: border-color 0.2s;
-  animation: fadeIn 0.22s ease;
+  border-left: 3px solid var(--gold2);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  margin-bottom: 7px;
+  display: flex; gap: 11px; align-items: flex-start;
+  transition: border-color 0.2s, transform 0.1s;
+  animation: cardIn 0.22s cubic-bezier(.4,0,.2,1);
 }
-@keyframes fadeIn {
-  from { opacity:0; transform: translateY(-6px); }
-  to   { opacity:1; transform: translateY(0); }
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(-5px); }
+  to   { opacity:1; transform:translateY(0); }
 }
-.task-card:hover { border-color: var(--s3); }
-.task-card.done { background: #0f1510; border-color: #1c2e1e; }
+.task-card:active { transform: scale(0.995); }
+.task-card.done {
+  background: #0b100c;
+  border-color: #1a2a1c;
+  border-left-color: #1e3a22;
+}
 
 /* checkbox */
-.cb-wrap { flex-shrink:0; margin-top:1px; }
+.cb-wrap { flex-shrink:0; padding-top:1px; }
 .cb-wrap input { display:none; }
 .cbmark {
-  width: 22px; height: 22px;
-  border: 2px solid var(--border); border-radius: 6px;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; transition: all 0.15s;
+  width: 20px; height: 20px;
+  border: 2px solid var(--border2); border-radius: 5px;
+  display: flex; align-items:center; justify-content:center;
+  cursor: pointer; transition: all 0.15s;
 }
-.cb-wrap input:checked + .cbmark {
-  background: var(--green); border-color: var(--green);
-}
-.cbmark svg { opacity:0; transition: opacity 0.15s; }
+.cb-wrap input:checked + .cbmark { background:var(--green); border-color:var(--green); }
+.cbmark svg { opacity:0; transition:opacity 0.12s; }
 .cb-wrap input:checked + .cbmark svg { opacity:1; }
 
 .task-body { flex:1; min-width:0; }
 .task-title {
-  font-size:0.96rem; font-weight:600; color:var(--text);
-  word-break:break-word; line-height:1.4;
+  font-size: 0.95rem; font-weight: 600; color: var(--text);
+  word-break: break-word; line-height: 1.45;
 }
-.task-card.done .task-title { text-decoration:line-through; color:#3d6040; }
+.task-card.done .task-title { text-decoration:line-through; color:#375a3a; }
 .task-note {
-  font-size:0.82rem; color:var(--muted);
-  margin-top:4px; word-break:break-word;
+  font-size: 0.8rem; color: var(--muted);
+  margin-top: 3px; word-break:break-word; line-height:1.4;
 }
-.task-card.done .task-note { color:#2e4a30; }
+.task-card.done .task-note { color: #27422a; }
+
+/* ─── INLINE PLAYER in card ─── */
+.card-player {
+  margin-top: 8px;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.task-card.done .card-player { border-color: #1c2e1f; background: #0e1610; }
+.task-card.done .card-player .play-btn { border-color: #1c2e1f; background: #111e13; color: #2a5c2e; }
+.task-card.done .card-player .prog-fill { background: #2a5c2e; }
+
 .task-meta {
   display:flex; align-items:center; gap:8px;
-  margin-top:7px; flex-wrap:wrap;
+  margin-top:6px; flex-wrap:wrap;
 }
-.task-date { font-size:0.73rem; color:var(--muted); }
+.task-date { font-size:0.7rem; color:var(--muted); }
 
-/* audio pill */
-.audio-pill {
-  display:inline-flex; align-items:center; gap:5px;
-  background:var(--s2); border:1px solid var(--border);
-  border-radius:20px; padding:3px 10px 3px 7px;
-  cursor:pointer; font-size:0.76rem; color:var(--muted);
-  transition: border-color 0.15s, color 0.15s;
-}
-.audio-pill:hover { border-color:var(--accent2); color:var(--accent2); }
-.pill-dot {
-  width:7px; height:7px; border-radius:50%;
-  background:var(--accent2); flex-shrink:0;
-}
-
-.task-actions { display:flex; flex-direction:column; gap:4px; }
+/* right side */
+.task-right { display:flex; flex-direction:column; gap:4px; align-items:flex-end; flex-shrink:0; }
 .del-btn {
-  background:none; border:none; color:var(--muted);
-  cursor:pointer; padding:4px; border-radius:6px;
+  background:none; border:none;
+  color: var(--border2); cursor:pointer;
+  padding:3px; border-radius:5px;
   display:flex; align-items:center;
   transition: color 0.15s, background 0.15s;
 }
-.del-btn:hover { color:var(--red); background:rgba(224,85,85,0.1); }
+.del-btn:hover { color:var(--red); background:rgba(224,68,68,0.1); }
 
-/* empty */
-.empty { text-align:center; color:var(--muted); padding:40px 0; font-size:0.9rem; }
+.empty { text-align:center; color:var(--muted); padding:50px 0; font-size:0.88rem; }
 
-/* ── FLOATING PLAYER ── */
-.player-modal {
-  display:none; position:fixed;
-  bottom:20px; left:50%; transform:translateX(-50%);
-  background:var(--s2); border:1px solid var(--border);
-  border-radius:14px; padding:14px 16px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.6);
-  z-index:200; min-width:290px; max-width:92vw;
-  animation:popUp 0.2s ease;
+/* ─── DONE SECTION LABEL ─── */
+.section-sep {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.85rem; letter-spacing: 2.5px; color: var(--muted);
+  margin: 18px 0 10px;
+  display: flex; align-items: center; gap: 10px;
 }
-@keyframes popUp {
-  from { opacity:0; transform:translateX(-50%) translateY(10px); }
-  to   { opacity:1; transform:translateX(-50%) translateY(0); }
-}
-.player-modal.open { display:block; }
-.pm-head {
-  font-size:0.78rem; color:var(--muted);
-  display:flex; justify-content:space-between; align-items:center;
-  margin-bottom:8px;
-}
-.pm-close {
-  background:none; border:none; color:var(--muted);
-  cursor:pointer; font-size:1.1rem; padding:0 3px;
-}
-.pm-close:hover { color:var(--text); }
-.player-modal audio { width:100%; accent-color:var(--accent); }
-
-/* ── VOICE HELP TOOLTIP ── */
-.mic-help { font-size:0.76rem; color:var(--muted); margin-bottom:10px; font-style:italic; }
+.section-sep::after { content:''; flex:1; height:1px; background:var(--border); }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Zákazky</h1>
-  <div class="hbadge" id="pendingBadge">0 čaká</div>
-  <a class="zello-fab" href="zello://" id="zelloBtn" title="Otvoriť Zello">
-    <div class="zello-dot"></div>
-    Zello
+  <div class="logo">ZÁ<span>KAZ</span>KY</div>
+  <div class="hbadge zero" id="hbadge">0 čaká</div>
+  <div class="spacer"></div>
+  <a class="zello-btn" href="zello://" title="Otvoriť Zello">
+    <div class="zdot"></div>Zello
   </a>
 </header>
 
 <div class="wrap">
 
-  <!-- ADD CARD -->
-  <div class="add-card">
-    <div class="add-card-title">+ Nová zákazka</div>
-
-    <p class="mic-help">💡 Môžeš pridať zákazku iba hlasom — nič písať nemusíš.</p>
-
-    <!-- Live mic -->
-    <div class="mic-row">
-      <button class="mic-btn" id="micBtn" onclick="toggleRec()" title="Nahrávať hlas">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
-        </svg>
-      </button>
-      <div class="mic-status" id="micStatus">Stlač mikrofón a diktuj zákazku</div>
-      <span class="rec-timer" id="recTimer" style="display:none;color:var(--rec);font-weight:700;font-size:0.85rem;"></span>
+  <!-- ── ADD PANEL ── -->
+  <div class="add-panel">
+    <div class="panel-head">
+      <svg width="13" height="13" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span class="panel-head-label">NOVÁ <span>ZÁKAZKA</span></span>
     </div>
+    <div class="panel-body">
 
-    <!-- Recorded preview -->
-    <div class="audio-preview-wrap" id="recPreviewWrap">
-      <audio id="recPreview" controls></audio>
-      <button class="btn-icon-sm" onclick="clearRecording()" title="Zmazať nahrávku">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
+      <!-- BIG MIC -->
+      <div class="mic-center">
+        <button class="mic-big" id="micBtn" onclick="toggleRec()">
+          <svg id="micIcon" width="26" height="26" fill="none" stroke="var(--gold)" stroke-width="1.8" viewBox="0 0 24 24">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
+          </svg>
+        </button>
+        <div class="wavebars" id="wavebars">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        <div class="mic-status" id="micStatus">Stlač a diktuj zákazku</div>
+        <div class="rec-t" id="recT" style="display:none">00:00</div>
+      </div>
 
-    <!-- Text fields (optional) -->
-    <div class="field">
-      <input type="text" id="titleInput" placeholder="Názov / adresa (nepovinné)…" />
-    </div>
-    <div class="field">
-      <textarea id="noteInput" placeholder="Poznámka (nepovinné)…"></textarea>
-    </div>
+      <!-- RECORDED PREVIEW -->
+      <div class="rec-preview" id="recPreviewWrap">
+        <span class="rec-preview-label">🎙</span>
+        <div class="mini-player" id="prevPlayer">
+          <button class="play-btn" id="prevPlayBtn" onclick="toggleMiniPlay('prevAudio','prevPlayBtn','prevFill','prevTime')">
+            <svg width="10" height="12" fill="currentColor" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+          </button>
+          <div class="prog-track" id="prevTrack" onclick="seekMini(event,'prevAudio','prevFill')">
+            <div class="prog-fill" id="prevFill"></div>
+          </div>
+          <span class="time-label" id="prevTime">0:00</span>
+        </div>
+        <button class="rm-btn" onclick="clearRec()" title="Zmazať">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <audio id="prevAudio" style="display:none"></audio>
+      </div>
 
-    <!-- File upload fallback -->
-    <div class="file-row">
-      <label class="file-lbl" for="audioFile">
-        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-        </svg>
-        Nahrať súbor
-      </label>
-      <input type="file" id="audioFile" accept="audio/*" onchange="fileAudio(this)">
-      <span class="file-name" id="fileName">žiadny súbor</span>
-    </div>
+      <!-- TEXT FIELDS -->
+      <div class="fields">
+        <input type="text" id="titleIn" placeholder="Názov / adresa (nepovinné)…" />
+        <textarea id="noteIn" placeholder="Poznámka (nepovinné)…"></textarea>
+      </div>
 
-    <button class="add-btn" onclick="addTask()">Pridať zákazku</button>
+      <!-- FILE UPLOAD -->
+      <div class="upload-row">
+        <label class="upload-lbl" for="audioFile">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Nahrať súbor
+        </label>
+        <input type="file" id="audioFile" accept="audio/*" onchange="onFileUpload(this)">
+        <span class="upload-name" id="uploadName">—</span>
+      </div>
+
+      <button class="add-btn" onclick="addTask()">PRIDAŤ ZÁKAZKU</button>
+    </div>
   </div>
 
-  <!-- PROGRESS -->
-  <div class="stats-row">
-    <span>Hotové: <strong id="doneCount">0</strong> / <strong id="totalCount">0</strong></span>
-    <span id="pctLabel">0 %</span>
+  <!-- STATS -->
+  <div class="stats-bar">
+    <span>Hotové: <b id="doneC">0</b> / <b id="totalC">0</b></span>
+    <span id="pctL">0 %</span>
   </div>
-  <div class="prog-wrap"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+  <div class="pb-wrap"><div class="pb-inner" id="pbInner" style="width:0%"></div></div>
 
   <!-- TABS -->
   <div class="tabs">
@@ -415,240 +491,300 @@ input[type=file] { display: none; }
   <div id="taskList"></div>
 </div>
 
-<!-- FLOATING PLAYER -->
-<div class="player-modal" id="playerModal">
-  <div class="pm-head">
-    <span id="pmLabel">Hlasová poznámka</span>
-    <button class="pm-close" onclick="closePlayer()">✕</button>
-  </div>
-  <audio id="pmAudio" controls></audio>
-</div>
-
 <script>
-// ── STATE ──
-let tasks  = JSON.parse(localStorage.getItem('zakazky2') || '[]');
+// ── STATE
+let tasks  = JSON.parse(localStorage.getItem('zak3')||'[]');
 let filter = 'all';
 
-// recording
-let mediaRecorder = null;
-let recChunks     = [];
-let recInterval   = null;
-let recSeconds    = 0;
-let recAudioData  = null;  // base64
-let recAudioName  = null;
+// ── RECORDING
+let mediaRecorder=null, recChunks=[], recInterval=null, recSec=0;
+let recData=null, recName=null;
+let fileData=null, fileName2=null;
 
-// file upload
-let fileAudioData = null;
-let fileAudioName = null;
+// ── mini player tracking (one at a time)
+let activeAudioEl = null;
+let activePlayBtn = null;
+let activeFill    = null;
+let activeTime    = null;
+let activeRaf     = null;
 
-function save() { localStorage.setItem('zakazky2', JSON.stringify(tasks)); }
+function save(){ localStorage.setItem('zak3', JSON.stringify(tasks)); }
 
-// ── RECORDING ──
-async function toggleRec() {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
-    stopRec();
-  } else {
-    startRec();
-  }
-}
-
-async function startRec() {
+// ── RECORDING
+async function toggleRec(){
+  if(mediaRecorder && mediaRecorder.state==='recording'){ stopRec(); return; }
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    // pick best supported format
-    const mimeType = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4','']
-      .find(m => m === '' || MediaRecorder.isTypeSupported(m));
-    mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-    recChunks = [];
-    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recChunks.push(e.data); };
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const mime = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4','']
+      .find(m => m==='' || MediaRecorder.isTypeSupported(m));
+    mediaRecorder = new MediaRecorder(stream, mime ? {mimeType:mime} : {});
+    recChunks=[];
+    mediaRecorder.ondataavailable = e=>{ if(e.data.size>0) recChunks.push(e.data); };
     mediaRecorder.onstop = finishRec;
     mediaRecorder.start(200);
-
-    recSeconds = 0;
-    recInterval = setInterval(() => {
-      recSeconds++;
-      const m = String(Math.floor(recSeconds/60)).padStart(2,'0');
-      const s = String(recSeconds%60).padStart(2,'0');
-      document.getElementById('recTimer').textContent = m+':'+s;
-    }, 1000);
-
-    document.getElementById('micBtn').classList.add('recording');
-    document.getElementById('micStatus').textContent = 'Nahrávam…';
-    document.getElementById('micStatus').classList.add('active');
-    document.getElementById('recTimer').style.display = 'inline';
-  } catch(e) {
-    alert('Mikrofón nie je dostupný: ' + e.message);
+    recSec=0;
+    recInterval=setInterval(()=>{
+      recSec++;
+      const m=String(Math.floor(recSec/60)).padStart(2,'0');
+      const s=String(recSec%60).padStart(2,'0');
+      document.getElementById('recT').textContent=m+':'+s;
+    },1000);
+    document.getElementById('micBtn').classList.add('rec');
+    document.getElementById('wavebars').classList.add('active');
+    document.getElementById('micStatus').textContent='Nahrávam…';
+    document.getElementById('micStatus').classList.add('rec');
+    document.getElementById('recT').style.display='inline';
+  } catch(e){
+    alert('Mikrofón nie je dostupný.\n\nOtvor súbor cez localhost alebo https:// (napr. tiiny.host)');
   }
 }
 
-function stopRec() {
-  if (!mediaRecorder) return;
+function stopRec(){
+  if(!mediaRecorder) return;
   mediaRecorder.stop();
-  mediaRecorder.stream.getTracks().forEach(t => t.stop());
+  mediaRecorder.stream.getTracks().forEach(t=>t.stop());
   clearInterval(recInterval);
-  document.getElementById('micBtn').classList.remove('recording');
-  document.getElementById('micStatus').textContent = 'Hotovo ✓ Prehraj alebo pridaj zákazku';
-  document.getElementById('micStatus').classList.remove('active');
-  document.getElementById('recTimer').style.display = 'none';
+  document.getElementById('micBtn').classList.remove('rec');
+  document.getElementById('wavebars').classList.remove('active');
+  document.getElementById('micStatus').textContent='Nahrávka hotová ✓';
+  document.getElementById('micStatus').classList.remove('rec');
+  document.getElementById('recT').style.display='none';
 }
 
-function finishRec() {
-  const mime = mediaRecorder.mimeType || 'audio/webm';
-  const blob = new Blob(recChunks, { type: mime });
-  const ext  = mime.includes('ogg') ? 'ogg' : mime.includes('mp4') ? 'mp4' : 'webm';
-  recAudioName = 'hlasovka_' + Date.now() + '.' + ext;
-  const reader = new FileReader();
-  reader.onload = e => {
-    recAudioData = e.target.result;
-    const preview = document.getElementById('recPreview');
-    preview.src = recAudioData;
+function finishRec(){
+  const mime=mediaRecorder.mimeType||'audio/webm';
+  const blob=new Blob(recChunks,{type:mime});
+  const ext=mime.includes('ogg')?'ogg':mime.includes('mp4')?'mp4':'webm';
+  recName='hlasovka_'+Date.now()+'.'+ext;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    recData=e.target.result;
+    const a=document.getElementById('prevAudio');
+    a.src=recData;
     document.getElementById('recPreviewWrap').classList.add('show');
   };
   reader.readAsDataURL(blob);
 }
 
-function clearRecording() {
-  recAudioData = null; recAudioName = null;
-  document.getElementById('recPreview').src = '';
+function clearRec(){
+  recData=null; recName=null;
+  stopMiniAll();
+  document.getElementById('prevAudio').src='';
+  document.getElementById('prevFill').style.width='0%';
+  document.getElementById('prevTime').textContent='0:00';
+  document.getElementById('prevPlayBtn').classList.remove('playing');
+  document.getElementById('prevPlayBtn').innerHTML='<svg width="10" height="12" fill="currentColor" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>';
   document.getElementById('recPreviewWrap').classList.remove('show');
-  document.getElementById('micStatus').textContent = 'Stlač mikrofón a diktuj zákazku';
+  document.getElementById('micStatus').textContent='Stlač a diktuj zákazku';
 }
 
-function fileAudio(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    fileAudioData = e.target.result;
-    fileAudioName = file.name;
-    document.getElementById('fileName').textContent = file.name;
-  };
+function onFileUpload(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{ fileData=e.target.result; fileName2=file.name; document.getElementById('uploadName').textContent=file.name; };
   reader.readAsDataURL(file);
 }
 
-// ── ADD TASK ──
-function addTask() {
-  const title = document.getElementById('titleInput').value.trim();
-  const note  = document.getElementById('noteInput').value.trim();
-  const audio = recAudioData || fileAudioData || null;
-  const audioName = recAudioName || fileAudioName || null;
+// ── MINI PLAYER LOGIC (shared, one at a time)
+function stopMiniAll(){
+  if(activeAudioEl){ activeAudioEl.pause(); }
+  if(activePlayBtn){ setPlayIcon(activePlayBtn, false); }
+  if(activeRaf){ cancelAnimationFrame(activeRaf); activeRaf=null; }
+  activeAudioEl=null; activePlayBtn=null; activeFill=null; activeTime=null;
+}
 
-  // need at least something
-  if (!title && !note && !audio) {
-    document.getElementById('micStatus').textContent = '⚠️ Nahraj hlasovku alebo napíš aspoň niečo';
-    document.getElementById('micStatus').style.color = 'var(--red)';
-    setTimeout(() => {
-      document.getElementById('micStatus').textContent = 'Stlač mikrofón a diktuj zákazku';
-      document.getElementById('micStatus').style.color = '';
-    }, 2500);
+function setPlayIcon(btn, playing){
+  btn.classList.toggle('playing', playing);
+  btn.innerHTML = playing
+    ? '<svg width="10" height="12" fill="currentColor" viewBox="0 0 10 12"><rect x="0" y="0" width="3.5" height="12"/><rect x="6.5" y="0" width="3.5" height="12"/></svg>'
+    : '<svg width="10" height="12" fill="currentColor" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>';
+}
+
+function fmtTime(s){
+  const m=Math.floor(s/60), sec=Math.floor(s%60);
+  return m+':'+(sec<10?'0':'')+sec;
+}
+
+function toggleMiniPlay(audioId, btnId, fillId, timeId){
+  const a  = document.getElementById(audioId);
+  const btn= document.getElementById(btnId);
+  const fill=document.getElementById(fillId);
+  const timeEl=document.getElementById(timeId);
+
+  if(activeAudioEl && activeAudioEl!==a){
+    // stop previous
+    stopMiniAll();
+  }
+
+  if(a.paused){
+    a.play();
+    activeAudioEl=a; activePlayBtn=btn; activeFill=fill; activeTime=timeEl;
+    setPlayIcon(btn,true);
+    tickProgress();
+    a.onended=()=>{ setPlayIcon(btn,false); fill.style.width='0%'; timeEl.textContent='0:00'; cancelAnimationFrame(activeRaf); activeRaf=null; };
+  } else {
+    a.pause();
+    setPlayIcon(btn,false);
+    cancelAnimationFrame(activeRaf); activeRaf=null;
+  }
+}
+
+function tickProgress(){
+  activeRaf=requestAnimationFrame(()=>{
+    if(activeAudioEl && !activeAudioEl.paused && activeAudioEl.duration){
+      const pct=(activeAudioEl.currentTime/activeAudioEl.duration)*100;
+      if(activeFill) activeFill.style.width=pct+'%';
+      if(activeTime) activeTime.textContent=fmtTime(activeAudioEl.currentTime);
+    }
+    if(activeAudioEl && !activeAudioEl.paused) tickProgress();
+  });
+}
+
+function seekMini(e, audioId, fillId){
+  const a=document.getElementById(audioId);
+  const track=e.currentTarget;
+  const pct=e.offsetX/track.offsetWidth;
+  if(a.duration){ a.currentTime=pct*a.duration; }
+  document.getElementById(fillId).style.width=(pct*100)+'%';
+}
+
+// card player seek
+function seekCard(e, taskId){
+  const a=document.getElementById('ca'+taskId);
+  const track=e.currentTarget;
+  const pct=e.offsetX/track.offsetWidth;
+  if(a && a.duration){ a.currentTime=pct*a.duration; }
+  const fill=document.getElementById('cf'+taskId);
+  if(fill) fill.style.width=(pct*100)+'%';
+}
+
+function toggleCardPlay(taskId){
+  const a=document.getElementById('ca'+taskId);
+  const btn=document.getElementById('cb2'+taskId);
+  const fill=document.getElementById('cf'+taskId);
+  const timeEl=document.getElementById('ct'+taskId);
+  if(!a) return;
+  toggleMiniPlayEl(a,btn,fill,timeEl);
+}
+
+function toggleMiniPlayEl(a,btn,fill,timeEl){
+  if(activeAudioEl && activeAudioEl!==a) stopMiniAll();
+  if(a.paused){
+    a.play();
+    activeAudioEl=a; activePlayBtn=btn; activeFill=fill; activeTime=timeEl;
+    setPlayIcon(btn,true);
+    tickProgress();
+    a.onended=()=>{ setPlayIcon(btn,false); fill.style.width='0%'; timeEl.textContent='0:00'; cancelAnimationFrame(activeRaf); activeRaf=null; };
+  } else {
+    a.pause(); setPlayIcon(btn,false); cancelAnimationFrame(activeRaf); activeRaf=null;
+  }
+}
+
+// ── ADD TASK
+function addTask(){
+  const title=document.getElementById('titleIn').value.trim();
+  const note =document.getElementById('noteIn').value.trim();
+  const audio=recData||fileData||null;
+  const aName=recName||fileName2||null;
+
+  if(!title && !note && !audio){
+    document.getElementById('micStatus').textContent='⚠ Nahraj hlasovku alebo napíš niečo';
+    document.getElementById('micStatus').style.color='var(--red)';
+    setTimeout(()=>{ document.getElementById('micStatus').textContent='Stlač a diktuj zákazku'; document.getElementById('micStatus').style.color=''; },2600);
     return;
   }
 
   tasks.unshift({
     id: Date.now(),
-    title: title || (audioName ? '🎙 ' + audioName : '(bez názvu)'),
-    note,
-    done: false,
+    title: title || (aName?'🎙 '+aName:'(bez názvu)'),
+    note, done:false,
     date: new Date().toLocaleDateString('sk-SK'),
-    audio,
-    audioName
+    audio, audioName:aName
   });
   save();
 
-  // reset form
-  document.getElementById('titleInput').value = '';
-  document.getElementById('noteInput').value  = '';
-  document.getElementById('audioFile').value  = '';
-  document.getElementById('fileName').textContent = 'žiadny súbor';
-  fileAudioData = null; fileAudioName = null;
-  clearRecording();
-
+  document.getElementById('titleIn').value='';
+  document.getElementById('noteIn').value='';
+  document.getElementById('audioFile').value='';
+  document.getElementById('uploadName').textContent='—';
+  fileData=null; fileName2=null;
+  clearRec();
   render();
 }
 
-// ── TOGGLE / DELETE ──
-function toggleDone(id) {
-  const t = tasks.find(t => t.id === id);
-  if (t) { t.done = !t.done; save(); render(); }
+// ── TOGGLE / DELETE
+function toggleDone(id){
+  const t=tasks.find(t=>t.id===id); if(t){ t.done=!t.done; save(); render(); }
 }
-function deleteTask(id) {
-  tasks = tasks.filter(t => t.id !== id);
-  save(); render();
+function deleteTask(id){
+  tasks=tasks.filter(t=>t.id!==id); save(); render();
 }
 
-// ── FILTER ──
-function setFilter(f, btn) {
-  filter = f;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+// ── FILTER
+function setFilter(f,btn){
+  filter=f;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
 
-// ── PLAYER ──
-function openPlayer(id) {
-  const t = tasks.find(t => t.id === id);
-  if (!t || !t.audio) return;
-  document.getElementById('pmAudio').src = t.audio;
-  document.getElementById('pmLabel').textContent = t.audioName || 'Hlasová poznámka';
-  document.getElementById('playerModal').classList.add('open');
-}
-function closePlayer() {
-  document.getElementById('playerModal').classList.remove('open');
-  document.getElementById('pmAudio').pause();
-}
+// ── RENDER
+function render(){
+  let visible=tasks;
+  if(filter==='pending') visible=tasks.filter(t=>!t.done);
+  if(filter==='done')    visible=tasks.filter(t=> t.done);
 
-// ── RENDER ──
-function render() {
-  let visible = tasks;
-  if (filter === 'pending') visible = tasks.filter(t => !t.done);
-  if (filter === 'done')    visible = tasks.filter(t =>  t.done);
+  const total=tasks.length;
+  const done =tasks.filter(t=>t.done).length;
+  const pend =total-done;
+  const pct  =total?Math.round(done/total*100):0;
 
-  const total   = tasks.length;
-  const done    = tasks.filter(t => t.done).length;
-  const pending = total - done;
-  const pct     = total ? Math.round(done/total*100) : 0;
+  const badge=document.getElementById('hbadge');
+  badge.textContent=pend+' čaká';
+  badge.className='hbadge'+(pend===0?' zero':'');
+  document.getElementById('doneC').textContent=done;
+  document.getElementById('totalC').textContent=total;
+  document.getElementById('pctL').textContent=pct+' %';
+  document.getElementById('pbInner').style.width=pct+'%';
 
-  document.getElementById('pendingBadge').textContent = pending + (pending===1?' čaká':' čaká');
-  document.getElementById('doneCount').textContent = done;
-  document.getElementById('totalCount').textContent = total;
-  document.getElementById('pctLabel').textContent   = pct + ' %';
-  document.getElementById('progBar').style.width    = pct + '%';
-
-  const list = document.getElementById('taskList');
-  if (!visible.length) {
-    list.innerHTML = '<div class="empty">Žiadne zákazky</div>';
+  const list=document.getElementById('taskList');
+  if(!visible.length){
+    list.innerHTML='<div class="empty">Žiadne zákazky</div>';
     return;
   }
 
-  list.innerHTML = visible.map(t => `
-    <div class="task-card ${t.done?'done':''}">
+  list.innerHTML=visible.map(t=>`
+    <div class="task-card${t.done?' done':''}">
       <div class="cb-wrap">
         <input type="checkbox" id="cb${t.id}" ${t.done?'checked':''} onchange="toggleDone(${t.id})">
         <label class="cbmark" for="cb${t.id}">
-          <svg width="12" height="12" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
+          <svg width="11" height="11" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         </label>
       </div>
       <div class="task-body">
         <div class="task-title">${esc(t.title)}</div>
-        ${t.note ? `<div class="task-note">${esc(t.note)}</div>` : ''}
+        ${t.note?`<div class="task-note">${esc(t.note)}</div>`:''}
+        ${t.audio?`
+          <div class="card-player">
+            <button class="play-btn" id="cb2${t.id}" onclick="toggleCardPlay(${t.id})">
+              <svg width="10" height="12" fill="currentColor" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+            </button>
+            <div class="prog-track" onclick="seekCard(event,${t.id})">
+              <div class="prog-fill" id="cf${t.id}"></div>
+            </div>
+            <span class="time-label" id="ct${t.id}">0:00</span>
+            <audio id="ca${t.id}" src="${t.audio}" preload="metadata" style="display:none"></audio>
+          </div>`:''}
         <div class="task-meta">
           <span class="task-date">${t.date}</span>
-          ${t.audio ? `
-            <span class="audio-pill" onclick="openPlayer(${t.id})">
-              <span class="pill-dot"></span>
-              ${esc((t.audioName||'hlasovka').substring(0,22))}
-            </span>` : ''}
         </div>
       </div>
-      <div class="task-actions">
+      <div class="task-right">
         <button class="del-btn" onclick="deleteTask(${t.id})" title="Zmazať">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="3 6 5 6 21 6"/>
             <path d="M19 6l-1 14H6L5 6"/>
-            <path d="M10 11v6M14 11v6"/>
-            <path d="M9 6V4h6v2"/>
+            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
           </svg>
         </button>
       </div>
@@ -656,15 +792,9 @@ function render() {
   `).join('');
 }
 
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// Enter in title
-document.getElementById('titleInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') addTask();
-});
-
+document.getElementById('titleIn').addEventListener('keydown',e=>{ if(e.key==='Enter') addTask(); });
 render();
 </script>
 </body>
